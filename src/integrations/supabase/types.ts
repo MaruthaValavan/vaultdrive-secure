@@ -302,6 +302,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      delete_folder_cascade: {
+        Args: { p_folder_id: string }
+        Returns: undefined
+      }
       file_access_role: {
         Args: { _file_id: string; _uid: string }
         Returns: Database["public"]["Enums"]["share_role"]
