@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedSharedWithMeRouteImport } from './routes/_authenticated/shared-with-me'
 import { Route as AuthenticatedDriveIndexRouteImport } from './routes/_authenticated/drive.index'
 import { Route as AuthenticatedDriveFolderIdRouteImport } from './routes/_authenticated/drive.$folderId'
@@ -28,6 +29,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSharedWithMeRoute =
@@ -51,6 +57,7 @@ const AuthenticatedDriveFolderIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/shared-with-me': typeof AuthenticatedSharedWithMeRoute
   '/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/drive/': typeof AuthenticatedDriveIndexRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/shared-with-me': typeof AuthenticatedSharedWithMeRoute
   '/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/drive': typeof AuthenticatedDriveIndexRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/search': typeof AuthenticatedSearchRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/shared-with-me': typeof AuthenticatedSharedWithMeRoute
   '/_authenticated/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/_authenticated/drive/': typeof AuthenticatedDriveIndexRoute
@@ -74,14 +83,26 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/search' | '/shared-with-me' | '/drive/$folderId' | '/drive/'
+    | '/'
+    | '/search'
+    | '/settings'
+    | '/shared-with-me'
+    | '/drive/$folderId'
+    | '/drive/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/search' | '/shared-with-me' | '/drive/$folderId' | '/drive'
+  to:
+    | '/'
+    | '/search'
+    | '/settings'
+    | '/shared-with-me'
+    | '/drive/$folderId'
+    | '/drive'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_authenticated/search'
+    | '/_authenticated/settings'
     | '/_authenticated/shared-with-me'
     | '/_authenticated/drive/$folderId'
     | '/_authenticated/drive/'
@@ -115,6 +136,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSearchRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/shared-with-me': {
       id: '/_authenticated/shared-with-me'
       path: '/shared-with-me'
@@ -141,6 +169,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSharedWithMeRoute: typeof AuthenticatedSharedWithMeRoute
   AuthenticatedDriveFolderIdRoute: typeof AuthenticatedDriveFolderIdRoute
   AuthenticatedDriveIndexRoute: typeof AuthenticatedDriveIndexRoute
@@ -148,6 +177,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedSharedWithMeRoute: AuthenticatedSharedWithMeRoute,
   AuthenticatedDriveFolderIdRoute: AuthenticatedDriveFolderIdRoute,
   AuthenticatedDriveIndexRoute: AuthenticatedDriveIndexRoute,
