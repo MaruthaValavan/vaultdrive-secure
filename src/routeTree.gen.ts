@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedDriveIndexRouteImport } from './routes/_authenticated/drive.index'
+import { Route as AuthenticatedDriveFolderIdRouteImport } from './routes/_authenticated/drive.$folderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -27,27 +28,41 @@ const AuthenticatedDriveIndexRoute = AuthenticatedDriveIndexRouteImport.update({
   path: '/drive/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDriveFolderIdRoute =
+  AuthenticatedDriveFolderIdRouteImport.update({
+    id: '/drive/$folderId',
+    path: '/drive/$folderId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/drive/': typeof AuthenticatedDriveIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/drive': typeof AuthenticatedDriveIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/_authenticated/drive/': typeof AuthenticatedDriveIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/drive/'
+  fullPaths: '/' | '/drive/$folderId' | '/drive/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/drive'
-  id: '__root__' | '/' | '/_authenticated' | '/_authenticated/drive/'
+  to: '/' | '/drive/$folderId' | '/drive'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/_authenticated/drive/$folderId'
+    | '/_authenticated/drive/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -78,14 +93,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDriveIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/drive/$folderId': {
+      id: '/_authenticated/drive/$folderId'
+      path: '/drive/$folderId'
+      fullPath: '/drive/$folderId'
+      preLoaderRoute: typeof AuthenticatedDriveFolderIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDriveFolderIdRoute: typeof AuthenticatedDriveFolderIdRoute
   AuthenticatedDriveIndexRoute: typeof AuthenticatedDriveIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDriveFolderIdRoute: AuthenticatedDriveFolderIdRoute,
   AuthenticatedDriveIndexRoute: AuthenticatedDriveIndexRoute,
 }
 
