@@ -55,7 +55,9 @@ const ICONS = {
   image: ImageIcon,
   video: Video,
   audio: Music,
-  document: FileText,
+  pdf: FileText,
+  text: FileText,
+  archive: FileIcon,
   other: FileIcon,
 } as const;
 
@@ -101,7 +103,7 @@ export function FileGrid({
     if (!ids.length) return;
     toast.info("Preparing your ZIP…");
     try {
-      const { items } = await downloadMany({ data: { fileIds: ids } });
+      const items = await downloadMany({ data: { fileIds: ids } });
       const zip = new JSZip();
       await Promise.all(
         items.map(async (item) => {
