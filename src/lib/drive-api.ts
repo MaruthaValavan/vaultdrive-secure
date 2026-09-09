@@ -112,8 +112,7 @@ export async function confirmUpload(args: {
     p_original_name: args.name,
     p_mime_type: args.mime || "application/octet-stream",
     p_size_bytes: args.size,
-    p_folder_id: args.folderId ?? undefined,
-    p_checksum: undefined,
+    ...(args.folderId ? { p_folder_id: args.folderId } : {}),
   });
   if (error) throw error;
 }
