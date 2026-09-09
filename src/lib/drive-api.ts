@@ -112,8 +112,8 @@ export async function confirmUpload(args: {
     p_original_name: args.name,
     p_mime_type: args.mime || "application/octet-stream",
     p_size_bytes: args.size,
-    p_folder_id: args.folderId,
-    p_checksum: null,
+    p_folder_id: args.folderId ?? undefined,
+    p_checksum: undefined,
   });
   if (error) throw error;
 }
@@ -142,10 +142,10 @@ export function uploadToSignedUrl(
 
 export async function searchItems(params: {
   q: string;
-  type?: string;
-  from?: string;
-  to?: string;
-  owner?: string;
+  type?: string | undefined;
+  from?: string | undefined;
+  to?: string | undefined;
+  owner?: string | undefined;
 }) {
   const term = `%${params.q}%`;
   let files = supabase

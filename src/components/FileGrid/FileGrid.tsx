@@ -330,7 +330,7 @@ function ItemCard({
       <div className="flex items-center gap-3">
         {onSelect && (
           <Checkbox
-            checked={selected}
+            checked={selected ?? false}
             onCheckedChange={onSelect}
             onClick={(e) => e.stopPropagation()}
             aria-label={`Select ${title}`}
@@ -380,10 +380,10 @@ function ItemMenu({
   onRename,
   onDelete,
 }: {
-  onDownload?: () => void;
-  onShare?: () => void;
-  onRename?: () => void;
-  onDelete?: () => void;
+  onDownload?: (() => void) | undefined;
+  onShare?: (() => void) | undefined;
+  onRename?: (() => void) | undefined;
+  onDelete?: (() => void) | undefined;
 }) {
   return (
     <DropdownMenu>

@@ -237,7 +237,10 @@ export const adminUpdateUser = createServerFn({ method: "POST" })
     const patch: Record<string, unknown> = {};
     if (data.isSuspended !== undefined) patch["is_suspended"] = data.isSuspended;
     if (data.quotaBytes !== undefined) patch["storage_quota_bytes"] = data.quotaBytes;
-    const { error } = await supabaseAdmin.from("profiles").update(patch).eq("id", data.userId);
+    const { error } = await supabaseAdmin
+      .from("profiles")
+      .update(patch as never)
+      .eq("id", data.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

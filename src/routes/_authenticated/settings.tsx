@@ -64,7 +64,7 @@ function SettingsPage() {
 
   async function destroy() {
     try {
-      await removeAccount({ data: {} });
+      await removeAccount();
       await supabase.auth.signOut();
       navigate({ to: "/", replace: true });
     } catch {
