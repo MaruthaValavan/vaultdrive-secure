@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { CloudUpload, Download, Lock } from "lucide-react";
@@ -39,8 +39,10 @@ function SharePage() {
   });
 
   const result = query.data;
-  const initialised = query.isSuccess || query.isPending;
-  if (!initialised && !query.isError) query.mutate(undefined);
+  const run = query.mutate;
+  useEffect(() => {
+    run(undefined);
+  }, [run, token]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
