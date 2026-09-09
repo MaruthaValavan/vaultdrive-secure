@@ -29,7 +29,10 @@ function RegisterPage() {
 
   async function signUp(e: React.FormEvent) {
     e.preventDefault();
-    if (password.length < 8) return toast.error("Use at least 8 characters for your password.");
+    if (password.length < 8) {
+      toast.error("Use at least 8 characters for your password.");
+      return;
+    }
     setBusy(true);
     const { error } = await supabase.auth.signUp({
       email,
@@ -51,7 +54,10 @@ function RegisterPage() {
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
     });
-    if (result.error) return toast.error("Google sign-in didn't work. Please try again.");
+    if (result.error) {
+      toast.error("Google sign-in didn't work. Please try again.");
+      return;
+    }
     if (result.redirected) return;
     navigate({ to: "/drive" });
   }

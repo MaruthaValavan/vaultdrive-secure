@@ -31,15 +31,21 @@ function LoginPage() {
     setBusy(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
-    if (error) toast.error("That email and password don't match an account.");
-    else navigate({ to: "/drive" });
+    if (error) {
+      toast.error("That email and password don't match an account.");
+      return;
+    }
+    navigate({ to: "/drive" });
   }
 
   async function google() {
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
     });
-    if (result.error) return toast.error("Google sign-in didn't work. Please try again.");
+    if (result.error) {
+      toast.error("Google sign-in didn't work. Please try again.");
+      return;
+    }
     if (result.redirected) return;
     navigate({ to: "/drive" });
   }

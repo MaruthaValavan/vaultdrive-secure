@@ -41,10 +41,13 @@ function AdminPage() {
   const users = useQuery({
     queryKey: ["admin-users"],
     enabled: isAdmin,
-    queryFn: () => list({ data: {} }),
+    queryFn: () => list(),
   });
 
-  async function apply(userId: string, payload: { isSuspended?: boolean; quotaGb?: number }) {
+  async function apply(
+    userId: string,
+    payload: { isSuspended?: boolean | undefined; quotaBytes?: number | undefined },
+  ) {
     try {
       await update({ data: { userId, ...payload } });
       toast.success("Account updated");
@@ -104,8 +107,11 @@ function AdminPage() {
                         variant="outline"
                         onClick={() => {
                           const value = Number(quotaDraft[u.id]);
-                          if (!Number.isFinite(value) || value <= 0) return toast.error("Enter a valid size");
-                          apply(u.id, { quotaGb: value });
+                          if (!Number.isFinite(value) || value <= 0) {
+                            toast.error("Enter a valid size");
+                            return;
+                          }
+                          apply(u.id, { quotaBytes: Math.round(value * 1024 ** 3) });
                         }}
                       >
                         Set
