@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { AuthLayout } from "@/routes/login";
+import { useAuthStore } from "@/store/authStore";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
@@ -34,7 +35,7 @@ function RegisterPage() {
       return;
     }
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -43,11 +44,28 @@ function RegisterPage() {
       },
     });
     setBusy(false);
-    if (error) toast.error(error.message);
-    else {
-      toast.success("Account created. Check your inbox if confirmation is required.");
-      navigate({ to: "/drive" });
+    if (error) {
+      if (error.message.toLowerCase().includes("already")) {
+        toast.error("That email already has an account. Please sign in instead.");
+        navigate({ to: "/login" });
+      } else {
+        toast.error(error.message);
+      }
+      return;
     }
+    if (!data.session) {
+      if (data.user && data.user.identities?.length === 0) {
+        toast.error("That email already has an account. Please sign in instead.");
+        navigate({ to: "/login" });
+        return;
+      }
+      toast.success("Almost there — check your email and confirm your address to finish.");
+      return;
+    }
+    useAuthStore.getState().setSession(data.session);
+    await useAuthStore.getState().refreshProfile();
+    toast.success("Welcome to VaultDrive!");
+    navigate({ to: "/drive" });
   }
 
   async function google() {

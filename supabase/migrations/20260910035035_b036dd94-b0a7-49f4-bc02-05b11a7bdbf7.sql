@@ -1,0 +1,10 @@
+grant execute on function public.file_access_role(uuid, uuid) to authenticated;
+grant execute on function public.folder_share_role(uuid, uuid) to authenticated;
+grant execute on function public.can_read_file(uuid, uuid) to authenticated;
+grant execute on function public.can_edit_file(uuid, uuid) to authenticated;
+grant execute on function public.can_read_folder(uuid, uuid) to authenticated;
+grant execute on function public.can_edit_folder(uuid, uuid) to authenticated;
+grant execute on function public.has_role(uuid, public.app_role) to authenticated;
+grant execute on function public.delete_folder_cascade(uuid) to authenticated;
+grant execute on function public.soft_delete_file(uuid) to authenticated;
+grant execute on function public.confirm_upload(text, text, text, bigint, uuid, text) to authenticated;
