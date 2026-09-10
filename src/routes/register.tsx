@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { AuthLayout } from "@/routes/login";
+import { useAuthStore } from "@/store/authStore";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
