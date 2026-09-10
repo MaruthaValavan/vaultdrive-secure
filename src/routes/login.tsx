@@ -29,12 +29,22 @@ function LoginPage() {
   async function signIn(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
     setBusy(false);
     if (error) {
-      toast.error("That email and password don't match an account.");
+      const msg = error.message.toLowerCase();
+      if (msg.includes("confirm")) {
+        toast.error("Please confirm your email address first — check your inbox.");
+      } else {
+        toast.error("That email and password don't match an account.");
+      }
       return;
     }
+    useAuthStore.getState().setSession(data.session);
+    await useAuthStore.getState().refreshProfile();
     navigate({ to: "/drive" });
   }
 
