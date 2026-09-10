@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+import { signInWithGoogle } from "@/lib/google-auth";
 import { AuthLayout } from "@/routes/login";
 import { useAuthStore } from "@/store/authStore";
 
@@ -69,9 +69,7 @@ function RegisterPage() {
   }
 
   async function google() {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
+    const result = await signInWithGoogle();
     if (result.error) {
       toast.error("Google sign-in didn't work. Please try again.");
       return;
