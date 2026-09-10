@@ -17,6 +17,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedSharedWithMeRouteImport } from './routes/_authenticated/shared-with-me'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as ShareTokenRouteImport } from './routes/share.$token'
 import { Route as AuthenticatedDriveIndexRouteImport } from './routes/_authenticated/drive.index'
 import { Route as AuthenticatedDriveFolderIdRouteImport } from './routes/_authenticated/drive.$folderId'
@@ -61,6 +62,11 @@ const AuthenticatedSharedWithMeRoute =
     path: '/shared-with-me',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShareTokenRoute = ShareTokenRouteImport.update({
   id: '/share/$token',
   path: '/share/$token',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/shared-with-me': typeof AuthenticatedSharedWithMeRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/share/$token': typeof ShareTokenRoute
   '/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/drive/': typeof AuthenticatedDriveIndexRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/shared-with-me': typeof AuthenticatedSharedWithMeRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/share/$token': typeof ShareTokenRoute
   '/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/drive': typeof AuthenticatedDriveIndexRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/shared-with-me': typeof AuthenticatedSharedWithMeRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/share/$token': typeof ShareTokenRoute
   '/_authenticated/drive/$folderId': typeof AuthenticatedDriveFolderIdRoute
   '/_authenticated/drive/': typeof AuthenticatedDriveIndexRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/shared-with-me'
+    | '/auth/callback'
     | '/share/$token'
     | '/drive/$folderId'
     | '/drive/'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/shared-with-me'
+    | '/auth/callback'
     | '/share/$token'
     | '/drive/$folderId'
     | '/drive'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/_authenticated/shared-with-me'
+    | '/auth/callback'
     | '/share/$token'
     | '/_authenticated/drive/$folderId'
     | '/_authenticated/drive/'
@@ -161,6 +173,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   ShareTokenRoute: typeof ShareTokenRoute
 }
 
@@ -222,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedWithMeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/share/$token': {
       id: '/share/$token'
       path: '/share/$token'
@@ -272,6 +292,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   ShareTokenRoute: ShareTokenRoute,
 }
 export const routeTree = rootRouteImport
