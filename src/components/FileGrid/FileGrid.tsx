@@ -327,7 +327,7 @@ function ItemCard({
 
   const body = (
     <>
-      <div className="flex items-center gap-3">
+      <div className="flex w-full items-center gap-3">
         {onSelect && (
           <Checkbox
             checked={selected ?? false}
@@ -362,7 +362,7 @@ function ItemCard({
     return (
       <div className={base} {...dragProps}>
         <Link to={href.to} params={href.params} className="absolute inset-0" aria-label={title} />
-        <div className="relative pointer-events-none [&_button]:pointer-events-auto">{body}</div>
+        <div className="relative w-full pointer-events-none [&_button]:pointer-events-auto">{body}</div>
       </div>
     );
   }
