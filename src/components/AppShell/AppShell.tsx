@@ -2,7 +2,6 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   HardDrive,
-  Users2,
   Search,
   Settings,
   ShieldCheck,
@@ -21,7 +20,6 @@ import { supabase } from "@/integrations/supabase/client";
 
 const NAV = [
   { to: "/drive", label: "My Files", icon: HardDrive },
-  { to: "/shared-with-me", label: "Shared with me", icon: Users2 },
   { to: "/search", label: "Search", icon: Search },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
