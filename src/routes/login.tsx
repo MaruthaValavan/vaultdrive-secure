@@ -48,16 +48,6 @@ function LoginPage() {
     navigate({ to: "/drive" });
   }
 
-  async function google() {
-    const result = await signInWithGoogle();
-    if (result.error) {
-      toast.error("Google sign-in didn't work. Please try again.");
-      return;
-    }
-    if (result.redirected) return;
-    navigate({ to: "/drive" });
-  }
-
   return (
     <AuthLayout title="Welcome back" subtitle="Sign in to reach your files.">
       <form className="space-y-4" onSubmit={signIn}>
@@ -79,14 +69,6 @@ function LoginPage() {
           Sign in
         </Button>
       </form>
-
-      <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
-        <span className="h-px flex-1 bg-border" /> or <span className="h-px flex-1 bg-border" />
-      </div>
-
-      <Button variant="outline" className="w-full" onClick={google}>
-        Continue with Google
-      </Button>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         New here?{" "}
